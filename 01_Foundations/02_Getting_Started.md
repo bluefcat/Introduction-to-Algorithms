@@ -112,4 +112,74 @@ We can express this worst-case running time as $an^2+bn+c$ for constants $a, b$ 
 
 ### **Worst-case and average-case analysis**  
 
-- The worst-case running time of an algorithm gives us an **upper bound** on the running time for any input
+- The worst-case running time of an algorithm gives us an **upper bound** on the running time for any input  
+
+## **Designing algorithm**  
+
+### **The divide-and-conquer approach**  
+
+The divide and conquer paradigm involves three steps at each level of the recursion :  
+
+- **Divide** : the problem into a number of subproblems that are smaller instances of the same problem  
+  
+- **Conquer** : the subproblems by solving them recursively. If the subproblem sizes are small enough, however, just slve the subproblems in a straightforward manner.  
+
+- **Combine** : the solutions to the subproblems into the solution for the original problem.  
+
+The ***merge sort*** algorithm closely follows the divide and conquer paradigm. Intuitively, it operates as follows.
+
+- **Divide** : Divide the $n$-element sequence to be sorted into two subsequences of $\frac{n}2$ elements each.
+  
+- **Conquer** : Sort the two subsequences recursively using merge sort.
+  
+- **Combine** : Merge the two sorted subsequences to produce the sorted answer.  
+
+The recursion "bottoms out" when the sequence to be sorted has length 1, in which case there is no work to be done, since every sequence of length 1 is already in sorted order.  
+
+$A[p\cdots q]$ and $A[q+1\cdots r]$ are in sorted order. It ***merges*** them to form a single sorted subarray that replaces the current subarray $A[p\cdots r]$. ($\;p\le q \lt r$  )
+
+**MERGE(A, p, q, r)**
+```c
+n_1 = q - p + 1
+n_2 = r - q
+let L[1...n_1+1] and R[1...n_2+1] be new arrays
+
+for i = 1 to n_1
+    L[i] = A[p+i-1]
+
+for j = 1 to n_2
+    R[j] = A[q + j]
+
+L[n_1+1] = inf
+R[n_2+1] = inf
+i = 1
+j = 1
+
+for k = p to r
+    if L[i] <= R[j]
+        A[k] = L[i]
+        i = i + 1
+
+    else 
+        A[k] = R[j]
+        j = j + 1
+```
+
+**loop invariant** : At the start of each iteration of the **for** loop of lines 12-17 the subarray $A[p\cdots k-1]$ contains the $k-p$ smallest elements of $L[1\cdots n_1+1]$ and $R[1\cdots n_2+1]$, in sorted order. Moreover, $L[i]$ and $R[i]$ are the smallest elements of their arrays that have not been copied back into $A$.  
+
+- **Initialization** : Piror to the first iteration of the loop, we have $k=p$, so that the subarray $A[p\cdots k-1]$ is empty. This empty subarray contains the $k-p=0$ smallest elements of $L$ and $R$ and since $i=j=1$, both $L[i]$ and $R[j]$ are the smallest elements of their arrays that have not been copied back into $A$
+
+- **Maintenance** : Let us first suppose that $L[i]\le R[j]$. Then $L[i]$ is the smallest element not yet copied back into $A$. Incrementing $k$ and $i$ reestablishes the loop invariant for the next iteration.
+  
+- **Termination** : At termination, $k=r+1$. By the loop invariant, the subarray $A[p\cdots k-1]$, which is $A[p\cdots r]$, contains the $k-p=r-p+1$ smallest elements of $L[1\cdots n_1+1]$ and $R[1\cdots n_2+1]$, in sorted order. The arrays $L$ and $R$ together contain $n_1+n_2+2=r-p+3$ elements. All but the two largest have been copied back into $A$, and these two largest elements are the sentinels.  
+
+**MERGE** procedure runs in $O(n)$ time.  
+
+**MERGE-SORT(A, p, r)**
+```c
+if p < r
+    q = floor((p+r)/2)
+    MERGE-SORT(A, p, q)
+    MERGE-SORT(A, q+1, r)
+    MERGE(A, p, q, r)
+```
