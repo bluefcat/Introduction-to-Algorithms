@@ -59,3 +59,57 @@ We must show three things about a loop invariant:
 > but in sorted order.  
 > Observing that the subarray $A[1\cdots n]$ is the entire array, we conclude that entire array is sorted, Hence, the algorithm is correct  
 
+## **Analyzing algorithms**  
+
+Predictiong the resources that the algorithm requires. Most often it is computational time that we want to measure.  
+
+### **Analysis of insertion sort**
+
+**input size** : Notion for input size depends on the problem being studied.
+- Problem, such as sorting or computing discrete Fourier transforms, the most natural measure is the number of items in the input.
+  - ex) the array size $n$ for sorting.
+
+- Problem, such as multiplying two integers, the best measure of input size is the total number of bits needed to represent the input in ordinary binary notation.
+
+- If the input to an algorithm is a graph, the input size can be described by the numbers of vertices and edges in the graph.
+
+**running time** : The number of primitive operations or "steps" executed.
+
+- We shall assume that eache execution of the $i$th line takes time $c_i$, where $c_i$ is a constant.
+
+<img src="./insertion_sort_analysis.png" alt="cost analysis of insertion sort" width=600 height=250></img>
+
+$$
+T(n) = c_1n+c_2(n-1)+c_4(n-1)+c_5\sum_{j=2}^n t_j+c_6\sum_{j=2}^n (t_j-1)+c_7\sum_{j=2}^n (t_j-1)+c_8(n-1)
+$$  
+
+In Insertion-sort, the best case occurs if the array is already sorted.  
+
+$$
+\begin{aligned}
+T(n) &= c_1n+c_2(n-1)+c_4(n-1)+c_5(n-1)+c_8(n-1)\\
+&= (c_1+c_2+c_4+c_5+c_8)n - (c_2+c_4+c_5+c_8) 
+\end{aligned}
+$$  
+We can express this running time as $an+b$ for constants $a$ and $b$  
+that depend on the statement costs $c_i$; it is thus a ***linear function*** of $n$  
+
+If the array is in reverse sorted order ther worst case results.
+
+$$
+\sum_{j=2}^n j=\frac{n(n+1)}{2}-1\\\;\\
+\sum_{j=2}^n(j-1)=\frac{n(n-1)}{2}
+$$  
+
+$$
+\begin{aligned}
+T(n) &= c_1n+c_2(n-1)+c_4(n-1)+c_5\left(\frac{n(n+1)}{2}-1\right)+c_6\left(\frac{n(n-1)}{2}\right)+c_7\left(\frac{n(n-1)}{2}\right)+c_8(n-1)\\
+&= \left(\frac{c_5}2+\frac{c_6}2+\frac{c_7}2\right)n^2+(c_1+c_2+c_4+\frac{c_5}2-\frac{c_6}2-\frac{c_7}2+c_8)n - (c_2+c_4+c_5+c_8) 
+\end{aligned}
+$$  
+
+We can express this worst-case running time as $an^2+bn+c$ for constants $a, b$ and $c$ that again depend on the statement costs $c_i$; it is thus a ***quadratic function*** of $n$
+
+### **Worst-case and average-case analysis**  
+
+- The worst-case running time of an algorithm gives us an **upper bound** on the running time for any input
