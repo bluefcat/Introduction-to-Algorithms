@@ -183,3 +183,55 @@ if p < r
     MERGE-SORT(A, q+1, r)
     MERGE(A, p, q, r)
 ```
+
+### **Analyzing divide-and-conquer algorithms**  
+
+We let $T(n)$ be the running time on a problem of size $n$. If the problem size is small enough, say $n\le c$ for some constant $c$, the straightforward solution takes constant time, which we write as $\Theta(1)$.  
+Suppose that our division of the problem yields $a$ subproblems, each of which is $1/b$ the size of the original. It takes time $T(n/b)$ to solve one subproblem of size $n/b$, and so it takes time $aT(n/b)$ to solve $a$ of them.  
+If we take $D(n)$ time to divide the problem into subproblems and $C(n)$ time to combine the solutions to the subproblems into the solution to the original problem, we get the recurrence
+
+$$
+T(n)=
+\begin{cases}
+\Theta(1) & \text{if } n\le c\\
+aT(n/b)+D(n)+C(n)&\text{otherwise}
+\end{cases}
+$$  
+
+#### **Analysis of merge sort**  
+
+- **Divide** : The divide step hust computes the middle of the subarray, which takes constant time. Thus $D(n)=\Theta(n)$  
+
+- **Conquer** : We recursively solve two subproblems, each of size $n/2$ which contributes $2T(n/2)$ to the running time.
+
+- **Combine** : We have already noted that the **Merge** procedure on an $n$-element subarray takes time $\Theta(n)$, and so $C(n)=\Theta(n)$  
+
+$$
+
+\begin{aligned}
+T(n) &=
+\begin{cases}
+\Theta(1) & \text{if } n=1\\
+2T(n/2)+\Theta(n) & \text{if } n\gt 1
+\end{cases}\\
+&=
+\begin{cases}
+c & \text{if } n=1\\
+2T(n/2) + cn & \text{if } n\gt 1
+\end{cases}
+\end{aligned}
+$$  
+
+For convenience, we assume that $n$ is an exact $2^x$
+
+$$
+T(n)=2\,T\left(\frac{n}{2} \right)+cn \\ \; \\
+T(n/2)=2\,T\left(\frac{n}{4} \right)+cn \\ \; \\
+\begin{aligned}
+T(n)&=2\left(2\,T\left(\frac{n}{4} \right)+\frac{cn}{2}\right)+cn \\
+&=2\left(2\cdots \left(2\,T\left(\frac{n}{2^x}\right)+\frac{cn}{2^{x-1}}\right)\cdots +\frac{cn}{2}\right)+cn\\
+&=2^xc+\sum_{i=0}^{x-1}cn\\
+&=2^xc+cnx\\
+&=nc+cn\lg n & \because n=2^x
+\end{aligned}
+$$
