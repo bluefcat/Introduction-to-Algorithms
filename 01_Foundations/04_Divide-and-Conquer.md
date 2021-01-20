@@ -94,3 +94,90 @@ T(n)=
 $$
 
 As we shall see from the master method, this recurrence has the solution $T(n)=\Theta(n\lg n)$.
+
+## **Strassen's algorithm for matrix multiplication**  
+
+If $A=(a_{ij})$ and $B=(b_{ij})$ are square $n\times n$ matrices, then in the product $C=A\cdot B$, we define the entry $c_{ij}$  
+
+$c_{ij}=\sum_{k=1}^{n}a_{ik}b_{kj}$  
+
+**SQUARE-MATRIX-MULTIPLY(A, B)**
+```c
+n = A.rows
+let C be a new n*n matrix
+for i = 1 to n
+    for j = 1 to n
+        c_ij = 0
+        for k = 1 to n
+            c_ij = c_ij + a_ik * b_kj
+
+return C
+```
+
+The SQUARE-MATRIX-MULTIPLY procedure takes $\Theta(n^3)$ time.  
+
+### **A simple divide-and-conquer algorithm**  
+
+We assume that $n$ is an exact power of 2 in each of the $n\times n$ matrices. We make this assumption because in each divide step, we will divide $n\times n$ matrices into four $n/2\times n/2$ matrices, and by assuming that $n$ is an exact power of 2, we are guaranteed that as long as $n\ge 2$, the dimension $n/2$ is an integer.  
+
+Suppose that we partition each of $A, B$ and $C$ into four $n/2\times n/2$ matrices  
+$$
+A=\begin{pmatrix}
+A_{11}&A_{12}\\
+A_{21}&A_{22} 
+\end{pmatrix},\quad
+B=\begin{pmatrix}
+B_{11}&B_{12}\\
+B_{21}&B_{22} 
+\end{pmatrix},\quad
+C=\begin{pmatrix}
+C_{11}&C_{12}\\
+C_{21}&C_{22} 
+\end{pmatrix}
+$$
+so that we rewrite the equation $C=A\cdot B$ as  
+$$
+\begin{pmatrix}
+C_{11}&C_{12}\\
+C_{21}&C_{22} 
+\end{pmatrix}=
+\begin{pmatrix}
+A_{11}&A_{12}\\
+A_{21}&A_{22} 
+\end{pmatrix}\cdot
+\begin{pmatrix}
+B_{11}&B_{12}\\
+B_{21}&B_{22} 
+\end{pmatrix}
+$$
+Equation corresponds to the four equations
+$$
+C_{11}=A_{11}\cdot B_{11}+A_{12}\cdot B_{21}\\
+C_{12}=A_{11}\cdot B_{12}+A_{12}\cdot B_{22}\\
+C_{21}=A_{21}\cdot B_{11}+A_{22}\cdot B_{21}\\
+C_{22}=A_{21}\cdot B_{12}+A_{22}\cdot B_{22}
+$$  
+
+**SQUARE-MATRIX-MULTIPLY-RECURSIVE(A, B)**
+```c
+n = A.rows
+let C be a new n*n matrix
+if n == 1
+    C_11 = A_11*B_11
+else partition A, B and C as in equations 
+    C_11 = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_11, B_11) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_12, B_21)    
+    C_12 = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_11, B_12) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_12, B_22)    
+    C_21 = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_21, B_11) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_22, B_21)
+    C_22 = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_21, B_12) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_22, B_22)
+    return C
+```
+
+$$
+T(n)=
+\begin{cases}
+\Theta(1) & \text{ if }n=1\\
+8T(n/2)+\Theta(n^2)&\text{ if }n\gt 1    
+\end{cases}
+$$
+
+$T(n)=\Theta(n^3)$  
