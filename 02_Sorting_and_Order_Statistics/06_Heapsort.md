@@ -101,3 +101,56 @@ for i = A.length downto 2
 
 The **HEAPSORT** procedure takes time $O(n \lg n)$, since the call to **BUILD-MAX-HEAP** takes time $O(n)$ and each of the $n-1$ calls to **MAX-HEAPIFY** takes time $O(\lg n)$.  
 
+## **Priority queues**  
+
+A **max-priority queue** supports the following operation:  
+- **INSERT(S, x)** : insert the element $x$ into the set $S$, which is equivalent to the operation $S = S\cup \{x\}$
+
+- **MAXIMUM(S)** : returns the element of $S$ with the largest key
+
+- **EXTRACT-MAX(S)** : removes and returns the element of $S$ with the largest key  
+
+- **INCREASE-KEY(S, x, k)** : increases the value of element $x$'s key to the new value $k$, which is assumed to be at least as large as $x$'s current key value. 
+
+Alternatively, a min-priority queue spports the operations **INSERT**, **MINIMUM**, **EXTRACT-MIN** and **DECREASE-KEY**.
+
+The procedure **HEAP-MAXIMUM** implements the MAXIMUM operation in $\Theta(1)$ time.  
+
+**HEAP-MAXIMUM(A)**
+```c
+return A[1]
+```  
+
+The running time of **HEAP-EXTRACT-MAX** is $O(\lg n)$, since it performs only a constant amount of work on top of the $O(\lg n)$ time for **MAX-HEAPIFY**.
+
+**HEAP-EXTRACT-MAX(A)**
+```c
+if A.heap-size < 1
+    error "heap underflow"
+max = A[1]
+A[1] = A[A.heap-size]
+A.heap-size = A.heap-size - 1
+MAX-HEAPIFY(A, 1)
+return max
+```
+
+The running time of **HEAP-INCREASE-KEY** on an $n$-element heap is $O(\lg n)$, since the path tradced from the node updated in line 3 to the root has length $O(\lg n)$.
+
+**HEAP-INCREASE-KEY(A, i, key)**
+```c
+if key < A[i]
+    error "new key is smaller than current key"
+A[i] = key
+while i > 1 and A[PARENT(i)] < A[i]
+    exchange A[i] with A[PARENT(i)]
+    i = PARENT(i)
+```
+
+The running time of **MAX-HEAP-INSERT** on an $n$-element heap is $O(\lg n)$.
+
+**MAX-HEAP-INSERT(A, key)**
+```c
+A.heap-size = A.heap-size + 1
+A[A.heap-size] = -inf
+HEAP-INCREASE-KEY(A, A.heap-size, key)
+```
