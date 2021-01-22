@@ -65,3 +65,39 @@ for i = floor(A.length/2) downto 1
     MAX-HEAPIFY(A, i)
 ```
 
+To show why **BUILD-MAX-HEAP** works correctly, we use the following loop invariant:  
+
+> At the start of each iteration of the **for** loop of lines 2-3, each node $i+1, i+2, \cdots, n$ is the root of a max-heap  
+
+**Initialization** : Prior to the first iteration of the loop, $i=\lfloor n/2\rfloor$. Each node $\lfloor n/2\rfloor+1, \lfloor n/2\rfloor+2,\cdots,n$ is a leaf and is thus the root of a trivial max-heap.  
+
+**Maintenance** : To see that each iteration maintains the loop invarian, observe that the children of node $i$ are numbered higher than $i$. By the loop invariant, therefore, they are both roots of max-heaps. This is precisely the condtion required the **MAX-HEAPIFY(A, $i$)** call preserves teh property that nodes $i+1, i+2,\cdots,n$ are all roots of max-heaps. Decrementing $i$ in the **for** loop update reestablishes the loop invariant for the next iteration.  
+
+**Termination** : At termination, $i=0$. By the loop invariant, each node $1, 2,\cdots,n$ is the root of a max-heap. In particular, node 1 is.  
+
+Running time of **BUILD-MAX-HEAP** as follows. Each call to **MAX-HEAPIFY** costs $O(\lg n)$ time, and **BUILD-MAX-HEAP** makes $O(n)$ such calls. Thus, the running time is $O(n\lg n)$. This upper bound, though correct, is not asymptotically tight.  
+
+Tight analysis relies on the properties that an $n$-element heap has height $\lfloor\lg n\rfloor$ and at most $\lceil n/2^{h+1}\rceil$ nodes of any height h.  
+The time required by **MAX-HEAPIFY** when calle on a node of height $h$ is $O(h)$, and so we can express the total cost of **BUILD-MAX-HEAP** as being bounded from above by  
+$$
+\begin{aligned}
+ \sum^{\lfloor\lg n\rfloor}_{h=0}\lceil \frac{n}{2^{h+1}}\rceil O(h) &= O\left(n\sum^{\lfloor\lg n\rfloor}_{h=0}\frac{h}{2^h}\right) \\
+&= O(n) & \because\sum^{\infty}_{h=0}\frac{h}{2^h} = 2   
+\end{aligned}
+$$  
+
+Hence, we can build a max-heap from an unordered array in linear time.  
+
+## **The heapsort algorithm**
+
+**HEAPSORT(A)**
+```c
+BUILD-MAX-HEAP(A)
+for i = A.length downto 2
+    exchange A[1] with A[i]
+    A.heap-size = A.heap-size - 1
+    MAX-HEAPIFY(A, 1)
+```  
+
+The **HEAPSORT** procedure takes time $O(n \lg n)$, since the call to **BUILD-MAX-HEAP** takes time $O(n)$ and each of the $n-1$ calls to **MAX-HEAPIFY** takes time $O(\lg n)$.  
+
