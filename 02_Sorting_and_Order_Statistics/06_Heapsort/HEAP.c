@@ -9,7 +9,7 @@ void swap(int* x, int* y){
 }
 
 int PARENT(int i){
-	return i/2;
+	return (i-1)/2;
 }
 
 int LEFT(int i){
