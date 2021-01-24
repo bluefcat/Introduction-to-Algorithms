@@ -30,4 +30,11 @@ for j = p to r-1
         exchange A[i] with A[j]
 exchange A[i+1] with A[r]
 return i+1
-```
+```  
+
+**Initialization** : Prior to the first iteration of the loop, $i=p-1$ and $j=p$. Because no values lie between $p$ and $i$ and no values lie between $i+1$ and $j-1$, ther first two conditions of the loop invariant are trivially satisfied. The assignment in line 1 satisfies the third condition.  
+
+**Maintenance** :  We consider two cases, depending on the outcome of the test in line 4. When $A[j]\gt x$; the only action in the loop is to increment $j$. After $j$ is incremented, condition 2 holds for $A[j-1]$ and all other entries remain unchanged. When $A[j]\le x$; the loop increment $i$ swaps $A[i]$ and $A[j]$, and then increments $j$. Because of the swap, we now have that $A[i]\le x$, and condition 1 is satisfied. Similarly, we also have that $A[j-1]\gt x$, since the item that was swapped into $A[j-1]$ is, by the loop invariant, greater than $x$.
+
+**Termination** : At termination, $j=r$. Therefore, every entry array is in one of  the three sets described by the invariant, and we have partitioned the values in the array into three sets: those less than or equal to $x$, those greater than $x$, and a singleton set containing $x$ 
+
