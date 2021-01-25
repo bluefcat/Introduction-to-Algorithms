@@ -38,3 +38,64 @@ return i+1
 
 **Termination** : At termination, $j=r$. Therefore, every entry array is in one of  the three sets described by the invariant, and we have partitioned the values in the array into three sets: those less than or equal to $x$, those greater than $x$, and a singleton set containing $x$ 
 
+## Performance of quicksort  
+
+The running time of quicksort depends on whether the partitioning is balanced or inbalanced, which in turn depends on which elements are used for partitioning.  
+If the partitioning is balanced, the algorithm runs asymptotically as fast as merge sort.  
+If the partitioning is unbalanced, howeverm it can run asymptotically as slowly as insertion sort.  
+
+### Worst-case partitioning  
+
+Let us assumue that this unbalanced partitioning arises in each recursive call. The partitioning costs $\Theta(n)$ times. Since the recursive call on an array of size 0 just returns, &T(0)=\Theta(1)&, and the recurrence for the running time is  
+$$
+\begin{aligned}
+T(n) &= T(n-1)+T(0)+\Theta(n)\\
+&= T(n-1)+\Theta(n)\\
+&= \Theta(n^2)
+\end{aligned}
+$$
+
+### Best-case partitioning  
+
+In the most even possible split, PARTITION produces two subproblems, each of size no more than $n/2$, since one is of size $\lfloor n/2\rfloor$ and one of size $\lceil n/2\rceil -1$. In this case, quicksort runs much faster. The recurrence for the running time is then  
+$$
+T(n)=2T(n/2)+\Theta(n),
+$$
+
+where we tolerate the sloppiness from ignoring the floor and ceiling and from subtrancting 1. This recurrence has the solution $T(n)=\Theta(n\lg n)$.  
+
+## A randomized version of quicksort
+
+**RANDOMIZED-PARTITION(A, p, r)**
+```c
+i = RANDOM(p, r)
+exchange A[r] with A[i]
+return PARTITION(A, p, r)
+```
+
+**RANDOMIZED-QUICKSORT(A, p, r)**
+```c
+if p < r
+    q = RANDOMIZED-PARTITION(A, p, r)
+    RANDOMIZED-QUICKSORT(A, p, q-1)
+    RANDOMIZED-QUICKSORT(A, q+1, r)
+```
+
+## Hoare partition correctness
+
+**HOARE-PARTITION(A, p, r)**
+```c
+x = A[p]
+i = p-1
+j = r+1
+while True
+    repeat
+        j = j - 1
+    until A[j] <= x
+    repeat
+        i = i + 1
+    until A[i] >= x
+    if i < j
+        exchange A[i] with A[j]
+    else return j
+```
