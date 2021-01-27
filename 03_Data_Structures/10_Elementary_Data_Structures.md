@@ -32,3 +32,27 @@ else S.top = S.top - 1
     return S[S.top + 1]
 ```
 
+Each of the three stack operations takes $O(1)$ time.
+
+### **Queues**  
+
+We call the INSERT operation on a queue ENQUEUE, and we call the DELETE operation DEQUEUE; like the stack operation POP, DEQUEUE takes no element argument.  
+
+**ENQUEUE(Q, x)**
+```c
+Q[Q.tail] = x
+if Q.tail == Q.length
+    Q.tail = 1
+else Q.tail = Q.tail + 1
+```
+
+**DEQUEUE(Q)**
+```c
+x = Q[Q.head]
+if Q.head == Q.length
+    Q.head = 1
+else Q.head = Q.head + 1
+return x
+```
+
+Each operation takes $O(1)$ time.
