@@ -43,4 +43,6 @@ m = P.length
 for s = 0 to n-m
     if P[1..m] == T[s+1, s+m]
         print "Pattern occurs with shift"" s
-```
+```  
+
+Procedure **NATIVE-STRING-MATCHER** takes time $O((n-m+1)m)$, and this bound is tight in the worst case.  
