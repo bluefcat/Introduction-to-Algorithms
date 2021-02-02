@@ -46,3 +46,26 @@ for s = 0 to n-m
 ```  
 
 Procedure **NATIVE-STRING-MATCHER** takes time $O((n-m+1)m)$, and this bound is tight in the worst case.  
+
+
+## **The Rabin-Karp algorithm**  
+
+**RABIN-KARP-MATCHER(T, P, d, q)**
+```c
+n = T.length
+m = P.length
+h = d^(m-1) mod q
+p = 0
+t_0 = 0
+for i = 1 to m          //preprocessing
+    p = (dp + P[i]) mod q
+    t_0 = (dt_0 + T[i]) mod q
+
+for s = 0 to n-m        //matching
+    if p == t_s
+        if P[1..m] == T[s+1..s+m]
+            print "Pattern occurs with shift" s
+    
+    if s < n-m
+        t_{s+1} = (d(t_s-T[s+1]h)+T[s+m+1]) mod q
+```
