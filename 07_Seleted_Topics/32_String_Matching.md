@@ -68,4 +68,29 @@ for s = 0 to n-m        //matching
     
     if s < n-m
         t_{s+1} = (d(t_s-T[s+1]h)+T[s+m+1]) mod q
-```
+```  
+
+## **String matching with finite automata**
+
+### **Finite automata**
+- $Q$ is a finite set of ***states***
+- $q_0\in Q$ is the ***start state***.
+- $A\subseteq Q$ is a distinguished set of ***accepting states***.
+- $\Sigma$ is a finite ***input alphabet***.
+- $\delta$ is a function from $Q\times\Sigma$ into $Q$, called the ***transition function*** of $M$.  
+
+the finite automaton begins in state $q_0$ and readsthe characters of its input string one at a time. If the automaton is in state $q$ to state $\delta(q, a)$. If the automaton is in state $q$ and reads input character $a$, it moves from state $q$ to state $\delta(q, a)$. Whenever its current state $q$ is a member of $A$, the machine $M$ has ***accepted*** the string read so far. An input that is not accepted is ***rejected***.  
+
+A finite automaton $M$ induces a function $\phi$, called the ***final-state function***, from $\Sigma^*$ to $Q$ such that $\phi(w)$  is the state $M$ ends up in after scanning the string $w$. Thus, $M$ accepts a string $w$ if and only if $\phi(w)\in A$. We define the function $\phi$ recursively, using the transition function:  
+
+$\begin{aligned}\phi(\epsilon) &= q_0\\\phi(wa) &= \delta(\phi(w), a)\text{ for }w\in \Sigma^*, a\in \Sigma \end{aligned}$  
+
+### **String-matching automata**  
+In order to specify the string-matching automaton corresponding to a given pattern $P[1\cdots m]$, we first define an auxiliary function $\sigma$, called the ***suffix function*** corresponding to $P$. The function $\sigma$ maps $\Sigma^*$ to $\{0, 1, \cdots, m\}$ such that $\sigma(x)$ is the length of the longest prefix of $P$ that is also a suffix of x :  
+
+$\sigma(x) = \max\{k:P_k \sqsupset x\}$  
+
+- The state set $Q$ is $\{0, 1, \cdots, m\}$. The start state $q_0$ is state0, and state $m$ is the only accepting state.  
+- The transition function $\delta$ is defined by the following equation, for any state $q$ and character $a$:  
+  $\delta(q, a) =\sigma(P_qa)$.  
+
