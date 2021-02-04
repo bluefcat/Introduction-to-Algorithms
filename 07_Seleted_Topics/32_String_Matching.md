@@ -94,3 +94,25 @@ $\sigma(x) = \max\{k:P_k \sqsupset x\}$
 - The transition function $\delta$ is defined by the following equation, for any state $q$ and character $a$:  
   $\delta(q, a) =\sigma(P_qa)$.  
 
+**FINITE-AUTOMATON-MATCHER(T, d, m)**
+```c
+n = T.length
+q = 0
+for i = 1 to n
+    q = d(q, T[i])
+    if q == m
+        print "Pattern occurs with shift" i-m
+```  
+
+**COMPUTE-TRANSITION-FUNCTION(P, s)**
+```c
+m = P.length
+for q = 0 to m
+    for each character a \in s
+        k = min(m+1, q+2)
+        repeat
+            k = k-1
+        until P_k \sqsupset P_q a
+        d(q, a) = k
+return d
+```
