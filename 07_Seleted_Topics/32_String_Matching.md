@@ -116,3 +116,46 @@ for q = 0 to m
         d(q, a) = k
 return d
 ```
+## **The Knuth-Morris-Pratt algorithm**
+
+This algorithm avoids computing the transition function $\delta$ altogether, and its matching time is $\Theta(n)$ using just an auxiliary function $\pi$, which we precompute from the pattern in time $\Theta(m)$ and store in an array $\pi[1\cdots m]$.  
+
+### **The prefix function for a pattern**
+
+We formalize the information that we precompute as follows. Given a pattern $P[1\cdots m]$, the ***prefix function*** for the pattern $P$ is the function $\pi : \{1,2,\cdots m\}\to\{0, 1, \cdots, m\}$ such that  
+
+$\pi[q]=\max\{k:k\lt q \text{ and } P_k\sqsupset P_q\}$.  
+
+**KMP-MATCHER(T, P)**
+```c
+n = T.length
+m = P.length
+pi = COMPUTE-PREFIX-FUNCTION(P)
+q = 0
+for i = 1 to n
+    while q > 0 and P[q+1] != T[i]
+        q = pi[q]
+    if P[q+1] == T[i]
+        q = q+1
+    if q == m
+        print "Pattern occurs with shift" i-m
+        q = pi[q]
+```  
+
+**COMPUTE-PREFIX-FUNCTION(P)**
+```c
+m = P.length
+let pi[1..m] be a new array
+pi[1] = 0
+k = 0
+for q = 2 to m
+    while k > 0 and P[k+1] != P[q]
+        k = pi[k]
+    if P[k+1] == P[q]
+        k = k+1
+    pi[q] = k
+return pi
+```  
+
+**COMPUTE-PREFIX-FUNCTION** runs in time $\Theta(m)$.  
+The matching time of **KMP-MATCHER** is $\Theta(n)$.
