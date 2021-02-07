@@ -1,5 +1,10 @@
 # Divide and Conquer
 
+## **INDEX**
+1. [Recurrence](#Recurrenc)
+2. [The maximum-subarray problem](#The-maximum-subarray-problem)
+3. [Strassen's algorithm for matrix multiplication](#strassens-algorithm-for-matrix-multiplication)
+
 **Divide** : The problem into a number of subproblems that are smaller instances of the same problem.  
 
 **Conquer** : The subproblems by solving them recursively. If the subproblem sizes are small enough, however, just solve the subproblems in a straightforward manner.  

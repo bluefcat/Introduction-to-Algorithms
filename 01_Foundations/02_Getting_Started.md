@@ -1,5 +1,11 @@
 # Getting Started
 
+## **INDEX**
+
+1. [Insertion sort](#Insertion-sort)
+2. [Analyzing algorithms](#Analyzing-algorithms)
+3. [Designing algorithm](#Designing-algorithm)
+
 ## **Insertion sort**
 
 Insertion sort, solves the **sorting problem**.
