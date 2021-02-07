@@ -9,7 +9,7 @@ int* COMPUTE_PREFIX_FUNCTION(const char* P){
 
 	int k = 0;
 	for(int q = 1; q < m; q ++){
-		while(k > 0 && P[k] != P[q]) k = pi[k];
+		while(k > 0 && P[k] != P[q]) k = pi[k-1];
 		if(P[k] == P[q]) k ++;
 		
 		pi[q] = k;
