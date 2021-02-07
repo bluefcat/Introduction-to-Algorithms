@@ -27,7 +27,7 @@ int KMP_MATCHER(const char* T, const char* P){
 
 	int q = 0;
 	for(int i = 0; i < n; i ++){
-		while(q > 0 && P[q] != T[i]) q = pi[q];
+		while(q > 0 && P[q] != T[i]) q = pi[q-1];
 		if(P[q] == T[i]) q ++;
 		
 		if(q == m){
