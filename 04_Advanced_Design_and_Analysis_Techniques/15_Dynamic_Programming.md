@@ -1,4 +1,15 @@
+<style>
+b {
+    color: slateblue;
+}
+</style>
+
 # **Dynamic Programming**  
+
+## **INDEX**
+
+1. [Rod cutting](#rod-cutting)
+2. [Longest common subsequence](#longest-common-subsequence)
 
 ## **Rod cutting**  
 
@@ -57,4 +68,98 @@ else q = -inf
         q = max(q, p[i] + MEMOIZED-CUT-ROD-AUX(p, n-i, r))
 r[n] = q
 return q
+```  
+
+**BOTTOM-UP-CUT-ROD(p, n)**
+```c
+let r[0..n] be a new array
+r[0] = 0
+for j = 1 to n
+    q = -inf
+    for i = 1 to j
+        q = max(q, p[i] + r[j-i])
+    r[j] = q
+return r[n]
+```
+
+## **Matrix-chain multiplication**  
+
+## **Elements of dynamicprogramming**  
+
+## **Longest common subsequence**  
+
+In the ***longest-common-subsequence problem***, we are given two sequences $X=\langle x_1, x_2, \cdots, x_m\rangle$ and $Y=\langle y_1,y_2,\cdots,y_n\rangle$ and wish to find a maximum length common subsequence of $X$ and $Y$.  
+
+### **Step 1: Characterizing a longest common subsequence**  
+
+The LCS problem has an optimal-substructure property, however, as the following theorem shows. Given a sequence $X=\langle x_1,x_2,\cdots,x_m\rangle$, we define the $i$th ***prefix*** of $X$, for $i=0,1,\cdots,m$, as $X_i=\langle x_1, x_2, \cdots, x_i\rangle$. For example, if $X=\langle A,B,C,B,D,A,B\rangle$, then $X_4=\langle A,B,C,B\rangle$ and $X_0$ is the empty sequence.  
+
+#### ***Theorem 15.1 (Optimal substructure of an LCS)***
+Let $X=\langle x_1, x_2,\cdots, x_m\rangle$ and $Y=\langle y_1, y_2,\cdots, y_n\rangle$ be sequences, and let $Z=\langle z_1, z_2,\cdots, z_k\rangle$ be any LCS of $X$ and $Y$.  
+
+1. If $x_m = y_n$, then $z_k = x_m = y_n$ and $Z_{k-1}$ is an LCS of $X_{m-1}$ and $Y_{n-1}$.
+2. If $x_m \neq y_n$, then $z_k\neq x_m$ implies that $Z$ is an LCS of $X_{m-1}$ and $Y$.
+3. If $x_m \neq y_n$, then $z_k\neq y_n$ implies that $Z$ is an LCS of $X$ and $Y_{n-1}$.  
+
+### **Step 2: A recursive solution**  
+
+$$
+c[i, j]=
+\begin{cases}
+    0 && \text{if } i=0\text{ or }j=0, \\
+    c[i-1, j-1] + 1 && \text{if } i,j > 0\text{ and }x_1=y_j, \\
+    \max(c[i, j-1], c[i-1, j]) && \text{if } i,j > 0 \text{ and }x_i\neq y_j,
+\end{cases}
+$$
+
+### **Step 3: Computing the length of an LCS**  
+
+<br>  
+
+**LCS-LENGTH(X, Y)**
+```c
+m = X.length
+n = Y.length
+let b[1..m, 1..n] and c[0..m, 0..n] be new tables
+for i = 1 to m
+    c[i, 0] = 0
+for j = 0 to n
+    c[0, j] = 0
+for i = 1 to m
+    for j = 1 to n
+        if x_i == y_j
+            c[i, j] = c[i-1, j-1]+1
+            b[i, j] = "↖"
+        else if c[i-1, j] >= c[i, j-1]
+            c[i, j] = c[i-1, j]
+            b[i, j] = "↑"
+        else c[i, j] = c[i, j-1]
+            b[i, j] = "←"
+return c and b
+```
+
+### **Step 4: Constructing an LCS**  
+
+||$y_i$|B|D|C|A|B|A|
+|:-:|-:|-:|-:|-:|-:|-:|-:|
+$x_i$|0|0|0|0|0|0|0|
+A|<b>0|↑ 0|↑ 0|↑ 0|↖ 1|← 1|↖ 1|
+B|0|<b>↖ 1|<b>← 1|← 1|↑ 1|↖ 2|← 2|
+C|0|↑ 1|↑ 1|<b>↖ 2|<b>← 2|↑ 2|↑ 2|
+B|0|↖ 1|↑ 1|↑ 2|↑ 2|<b>↖ 3|← 3|
+D|0|↑ 1|↑ 2|↖ 2|↑ 2|<b>↑ 3|↑ 3|
+A|0|↑ 1|↑ 2|↑ 2|↖ 3|← 3|<b>↖ 4|
+B|0|↖ 1|↑ 2|↑ 2|↑ 3|↖ 4|<b>↑ 4|  
+<br>
+
+**PRINT-LCS(b, X, i, j)**
+```c
+if i == 0 or j == 0
+    return
+if b[i, j] == "↖"
+    PRINT-LCS(b, X, i-1, j-1)
+    print x_i
+else if b[i ,j] == "↑"
+    PRINT-LCS(b, X, i-1, j)
+else PRINT-LCS(b, X, i, j-1)
 ```
