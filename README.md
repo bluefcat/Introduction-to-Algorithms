@@ -15,6 +15,7 @@
 ## 4. Advanced Design and Analysis Techniques
    15. [Dynamic Programming](04_Advanced_Design_and_Analysis_Techniques/15_Dynamic_Programming.md)
 ## 7. Seleted Topics
+   27. [Multithreaded Algorithms](07_Seleted_Topics/27_Multithreaded_Algorithms.md)
    32. [String Matching](07_Seleted_Topics/32_String_Matching.md)
 
 ## **References**
